@@ -3,6 +3,7 @@ package br.com.dio.spring.controller;
 import br.com.dio.spring.dto.MessageResponseDTO;
 import br.com.dio.spring.dto.request.PersonDTO;
 import br.com.dio.spring.entity.Person;
+import br.com.dio.spring.exception.PersonNotFoundException;
 import br.com.dio.spring.repository.PersonRepository;
 import br.com.dio.spring.service.PersonService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,6 +35,12 @@ public class PersonController {
     @GetMapping
     public List<PersonDTO> listAll() {
        return personService.listAll();
+    }
+
+    @GetMapping("(/{id})")
+    public PersonDTO findById(@PathVariable Long id) throws PersonNotFoundException {
+
+        return personService.findById(id);
     }
 
 }
