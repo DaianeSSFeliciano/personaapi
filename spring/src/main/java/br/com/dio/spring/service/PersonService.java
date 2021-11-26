@@ -1,7 +1,9 @@
 package br.com.dio.spring.service;
 
 import br.com.dio.spring.dto.MessageResponseDTO;
+import br.com.dio.spring.dto.request.PersonDTO;
 import br.com.dio.spring.entity.Person;
+import br.com.dio.spring.mapper.PersonMapper;
 import br.com.dio.spring.repository.PersonRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -12,14 +14,20 @@ public class PersonService {
 
     private PersonRepository personRepository;
 
+    private final PersonMapper personMapper = PersonMapper.INSTANCE;
+
     @Autowired
     public PersonService(PersonRepository personRepository) {
         this.personRepository = personRepository;
     }
 
     @PostMapping
-    public MessageResponseDTO createPerson(Person person) {
-        Person savadPerson = personRepository.save(person);
+    public MessageResponseDTO createPerson(PersonDTO personDTO) {
+
+        Person personToSave = personMapper.toModel(personDTO);
+
+
+        Person savadPerson = personRepository.save(personToSave);
         return MessageResponseDTO
                 .builder()
                 .message("Create Person with ID" + savadPerson.getId())
